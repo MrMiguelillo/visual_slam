@@ -1,0 +1,8 @@
+1) Constraints (cam to cam matching)
+		- Epipolar: Get fundamental matrix offline
+					Points have to be on the epiline
+		- Disparity: Points on the left should have a GREATER x value and not greater than a offline calculated param.
+		- Orientation: Difference in horientation should be lower than 20(?) degrees.
+		- Scale: One scale must be at most one level higher or lower than the other (???)
+		- Unique match: If one feature is matched more than once, then it's discarded.
+
