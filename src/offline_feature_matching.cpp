@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 //    extractor(left_img, left_mask, left_keypoints, left_descriptors, true);
 //    extractor(right_img, right_mask, right_keypoints, right_descriptors, true);
 
-    //----STEP 2.a: SIFT descriptors
+    //----STEP 2.B: SURF descriptors
     Mat left_descriptors;
     Mat right_descriptors;
 
@@ -82,7 +82,8 @@ int main(int argc, char **argv)
 //----STEP 4: Refining using match only inside region
 	//look whether the match is inside a defined area of the image
 	//only 25% of maximum of possible distance
-	double tresholdDist2 = 0.0625 * double(left_img.size().height*left_img.size().height + left_img.size().width*left_img.size().width);
+	double thresholdDist2 = 0.0625 * double(left_img.size().height*left_img.size().height + 
+							left_img.size().width*left_img.size().width);
 	//thresholdDist ^ 2 is used instead for speed purposes
 
 	vector< cv::DMatch > good_matches2;
@@ -98,7 +99,7 @@ int main(int argc, char **argv)
 			double dist2 = (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
 	
         	//save as best match if local distance is in specified area and on same height
-        	if (dist2 < tresholdDist2 && abs(from.y-to.y)<5)
+        	if (dist2 < thresholdDist2 && abs(from.y-to.y)<3)
         	{
 	            good_matches2.push_back(matches[i][j]);
             	j = matches[i].size();
@@ -117,7 +118,7 @@ int main(int argc, char **argv)
 	some_good_matches.reserve(5);
 	cv::namedWindow("Good Matches");
 
-	for(int i=0, j=0; i<good_matches2.size(); i++, j++){
+	for(int i=0, j=0; i<good_matches2.size(); i+=5, j++){
 
 	    if(5*(j+1) <= good_matches2.size()){
 	    	some_good_matches.clear();
@@ -143,11 +144,17 @@ int main(int argc, char **argv)
 
     cv::destroyWindow("Good Matches");
 
-// TODO:
+// TODO:	EPIPOLAR CONSTRAINT: VERTICAL COORDINATE MUST BE LOWER THAT A LIMIT (~1PX)
+//    		DISPARITY CONSTRAINT: HORIZONTAL COORDINATE OF LEFT CAMERA MUST BE GREATER (BUT NOT GREATER THAT A CERTAIN LIMIT)
+//			ORIENTATION CONSTRAINT: DIFFERENCE BETWEEN 2 ORIENTATIONS MUST BE WITHIN A CERTAIN LIMIT
+
+//			DISPARITY = B*f/Z    
+
 // NOTES: 	1)FLANN ES SIGNIFICATIVAMENTE MÁS RÁPIDO
     //		2)SURF NO ES MÁS RÁPIDO PERO A OJO PARECE MEJOR, SIN EMBARGO, DEVUELVE MUCHO MENOS PUNTOS
     //		3)SIFT PARECE DEMASIADO LENTO (1 con respecto a 0.24 de SURF)
     //		4)EL REFINADO ES MUY RÁPIDO, Y FUNCIONA MUY BIEN. DE MOMENTO NO ES NECESARIO MEJORARLO (EPIPOLAR...BLABLA)
+    //		radiusMatch no funciona, hay muy claros outliers
 
     // EN TOTAL TARDA POCO MÁS DE 0.5 -> HABRÍA QUE TRABAJAR A 2FPS :(
 }
