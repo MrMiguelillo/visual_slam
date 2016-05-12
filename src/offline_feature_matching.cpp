@@ -142,11 +142,19 @@ int main(int argc, char **argv)
 	    waitKey();
     }
 
+    std::cout << some_good_matches[0].queryIdx << std::endl;
+    std::cout << some_good_matches[0].trainIdx << std::endl;
+    std::cout << some_good_matches[0].imgIdx << std::endl;
+    std::cout << some_good_matches[0].distance << std::endl;
+
     cv::destroyWindow("Good Matches");
+    return 0;
 
 // TODO:	EPIPOLAR CONSTRAINT: VERTICAL COORDINATE MUST BE LOWER THAT A LIMIT (~1PX)
 //    		DISPARITY CONSTRAINT: HORIZONTAL COORDINATE OF LEFT CAMERA MUST BE GREATER (BUT NOT GREATER THAT A CERTAIN LIMIT)
-//			ORIENTATION CONSTRAINT: DIFFERENCE BETWEEN 2 ORIENTATIONS MUST BE WITHIN A CERTAIN LIMIT 
+//			ORIENTATION CONSTRAINT: DIFFERENCE BETWEEN 2 ORIENTATIONS MUST BE WITHIN A CERTAIN LIMIT
+
+//			DISPARITY = B*f/Z    ---> POR AQUÍ VA LA COSA
 
 // NOTES: 	1)FLANN ES SIGNIFICATIVAMENTE MÁS RÁPIDO
     //		2)SURF NO ES MÁS RÁPIDO PERO A OJO PARECE MEJOR, SIN EMBARGO, DEVUELVE MUCHO MENOS PUNTOS

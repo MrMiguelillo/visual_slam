@@ -7,11 +7,24 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   roscpp
   std_msgs
+  message_generation
   uvc_camera
 )
 find_package( OpenCV REQUIRED )
 
-catkin_package()
+add_message_files(
+	FILES
+	dmatch.msg
+)
+
+generate_messages(
+	DEPENDENCIES
+	std_msgs
+)
+
+catkin_package(
+	CATKIN_DEPENDS message_runtime
+)
 
 include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} )
 
