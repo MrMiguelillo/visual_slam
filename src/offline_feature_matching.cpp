@@ -33,18 +33,18 @@ int main(int argc, char **argv)
     // detector->detect(right_img, right_keypoints);
 
 //----STEP 1.b: SURF feature detection
-    SURF detector(400);
-    std::vector<cv::KeyPoint> left_keypoints;
-    std::vector<cv::KeyPoint> right_keypoints;
-    Mat left_mask = cv::Mat::ones(left_img.size(), CV_8U);
-    Mat right_mask = cv::Mat::ones(right_img.size(), CV_8U);
+    // SURF detector(400);
+    // std::vector<cv::KeyPoint> left_keypoints;
+    // std::vector<cv::KeyPoint> right_keypoints;
+    // Mat left_mask = cv::Mat::ones(left_img.size(), CV_8U);
+    // Mat right_mask = cv::Mat::ones(right_img.size(), CV_8U);
 
-    detector(left_img, left_mask, left_keypoints);
-    detector(right_img, right_mask, right_keypoints);
+    // detector(left_img, left_mask, left_keypoints);
+    // detector(right_img, right_mask, right_keypoints);
 
-    end = ros::Time::now();
-    std::cout << "Time spent on step 1: " << end - begin << std::endl;
-    begin = ros::Time::now();
+    // end = ros::Time::now();
+    // std::cout << "Time spent on step 1: " << end - begin << std::endl;
+    // begin = ros::Time::now();
 
 //----STEP 2.a: SIFT descriptors
 //    Mat left_descriptors;
@@ -55,14 +55,40 @@ int main(int argc, char **argv)
 //    extractor(right_img, right_mask, right_keypoints, right_descriptors, true);
 
     //----STEP 2.B: SURF descriptors
+    // Mat left_descriptors;
+    // Mat right_descriptors;
+
+    // detector(left_img, left_mask, left_keypoints, left_descriptors, true);
+    // detector(right_img, right_mask, right_keypoints, right_descriptors, true);
+
+    // end = ros::Time::now();
+    // std::cout << "Time spent on step 2: " << end - begin << std::endl;
+    // begin = ros::Time::now();
+
+//----STEPS 1.b & 2.b: This time all at once
+    std::vector<cv::KeyPoint> left_keypoints;
+    std::vector<cv::KeyPoint> right_keypoints;
+    Mat left_mask = cv::Mat::ones(left_img.size(), CV_8U);
+    Mat right_mask = cv::Mat::ones(right_img.size(), CV_8U);
     Mat left_descriptors;
     Mat right_descriptors;
 
-    detector(left_img, left_mask, left_keypoints, left_descriptors, true);
-    detector(right_img, right_mask, right_keypoints, right_descriptors, true);
+    SURF detector(400);
+    detector(left_img, left_mask, left_keypoints, left_descriptors, false);
+    detector(right_img, right_mask, right_keypoints, right_descriptors, false);
+//----STEPS 1.c & 2.c: ORB detection and description
+    // std::vector<cv::KeyPoint> left_keypoints;
+    // std::vector<cv::KeyPoint> right_keypoints;
+    // Mat left_mask = cv::Mat::ones(left_img.size(), CV_8U);
+    // Mat right_mask = cv::Mat::ones(right_img.size(), CV_8U);
+    // Mat left_descriptors;
+    // Mat right_descriptors;
+
+    // detector(left_img, left_mask, left_keypoints, left_descriptors, false);
+    // detector(right_img, right_mask, right_keypoints, right_descriptors, false);
 
     end = ros::Time::now();
-    std::cout << "Time spent on step 2: " << end - begin << std::endl;
+    std::cout << "Time spent on steps 1 and 2: " << end - begin << std::endl;
     begin = ros::Time::now();
 
 //----STEP 3.a: Brute Force matching
@@ -71,6 +97,14 @@ int main(int argc, char **argv)
 //	matcher->knnMatch( left_descriptors, right_descriptors, matches, 500 );
 
 //----STEP 3.b: FLANN matching
+    if(left_descriptors.type() != CV_32F){
+        left_descriptors.convertTo(left_descriptors, CV_32F);
+    }
+
+    if(right_descriptors.type() != CV_32F){
+        right_descriptors.convertTo(right_descriptors, CV_32F);
+    }
+
 	cv::FlannBasedMatcher matcher;
     std::vector<std::vector<cv::DMatch> > matches;
     matcher.knnMatch( left_descriptors, right_descriptors, matches, 2 );
@@ -141,11 +175,6 @@ int main(int argc, char **argv)
 	    cv::imshow( "Good Matches", img_matches );
 	    waitKey();
     }
-
-    std::cout << some_good_matches[0].queryIdx << std::endl;
-    std::cout << some_good_matches[0].trainIdx << std::endl;
-    std::cout << some_good_matches[0].imgIdx << std::endl;
-    std::cout << some_good_matches[0].distance << std::endl;
 
     cv::destroyWindow("Good Matches");
     return 0;
