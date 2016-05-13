@@ -31,12 +31,15 @@ include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} )
 #add_executable( feature_matching src/feature_matching.cpp )
 #target_link_libraries ( feature_matching ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
 
+#add_executable( calibrate_single_cam src/calibrate_single_cam.cpp )
+#target_link_libraries ( calibrate_single_cam ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+
 add_executable( offline_feature_matching src/offline_feature_matching.cpp )
 target_link_libraries ( offline_feature_matching ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
+
+add_executable( image_feeder src/image_feeder.cpp )
+target_link_libraries ( image_feeder ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 
 add_executable( online_feature_matching src/online_feature_matching.cpp )
 target_link_libraries ( online_feature_matching ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
 add_dependencies(online_feature_matching tfg_gencpp)
-
-#add_executable( calibrate_single_cam src/calibrate_single_cam.cpp )
-#target_link_libraries ( calibrate_single_cam ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
