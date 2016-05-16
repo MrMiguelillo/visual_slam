@@ -15,6 +15,7 @@ find_package( OpenCV REQUIRED )
 add_message_files(
 	FILES
 	dmatch.msg
+  dmatchArray.msg
 )
 
 generate_messages(
@@ -43,3 +44,7 @@ target_link_libraries ( image_feeder ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 add_executable( online_feature_matching src/online_feature_matching.cpp )
 target_link_libraries ( online_feature_matching ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
 add_dependencies(online_feature_matching tfg_gencpp)
+
+add_executable( dmatch_publish_test src/dmatch_publish_test.cpp )
+target_link_libraries ( dmatch_publish_test ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} opencv_nonfree)
+add_dependencies(dmatch_publish_test tfg_gencpp)

@@ -2,6 +2,7 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include "tfg/dmatch.h"
+#include "tfg/dmatchArray.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
     image_transport::Subscriber left_sub = it.subscribe("/left/image_raw", 1, left_img_callback);
     image_transport::Subscriber right_sub = it.subscribe("/right/image_raw", 1, right_img_callback);
 
-    ros::Publisher matches_pub = n.advertise<tfg::dmatch>("dmatches", 5);
+    ros::Publisher matches_pub = n.advertise<tfg::dmatchArray>("dmatches", 5);
 
     ros::Rate loop_rate(2);
     ros::Duration(1).sleep();
@@ -90,12 +91,16 @@ int main(int argc, char **argv)
 	    	}
 		}
 		
-		tfg::dmatch dmatch_msg;
-		dmatch_msg.queryIdx = good_matches2[0].queryIdx;
-		dmatch_msg.trainIdx = good_matches2[0].trainIdx;
-		dmatch_msg.imgIdx = good_matches2[0].imgIdx;
-		dmatch_msg.distance = good_matches2[0].distance;
-
+		tfg::dmatch dmatch_data;
+        tfg::dmatchArray dmatch_msg;
+        for(int i=0; i<good_matches2.size(); i++)
+        {
+            dmatch_data.queryIdx = good_matches2[i].queryIdx;
+            dmatch_data.trainIdx = good_matches2[i].trainIdx;
+            dmatch_data.imgIdx = good_matches2[i].imgIdx;
+            dmatch_data.distance = good_matches2[i].distance;
+            dmatch_msg.dmatches.push_back(dmatch_data);
+        }
     	matches_pub.publish(dmatch_msg);
 
     	ros::spinOnce();
