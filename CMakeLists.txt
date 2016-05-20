@@ -16,6 +16,10 @@ add_message_files(
 	FILES
 	dmatch.msg
   dmatchArray.msg
+  keypoint.msg
+  keypointArray.msg
+  pointsMatched.msg
+  pointsMatchedArray.msg
 )
 
 generate_messages(

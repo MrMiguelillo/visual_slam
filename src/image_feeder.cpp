@@ -16,16 +16,16 @@ int main(int argc, char **argv)
     image_transport::Publisher left_pub = it.advertise("/left/image_raw", 1);
     image_transport::Publisher right_pub = it.advertise("/right/image_raw", 1);
 
-    const Mat left_img = imread("/home/mike/catkin_ws/src/tfg/images/left.jpg", CV_LOAD_IMAGE_COLOR);
-    const Mat right_img = imread("/home/mike/catkin_ws/src/tfg/images/right.jpg", CV_LOAD_IMAGE_COLOR);
+    const Mat left_img = imread("/home/mike/catkin_ws/src/tfg/images/left.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+    const Mat right_img = imread("/home/mike/catkin_ws/src/tfg/images/right.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 
     cv_bridge::CvImagePtr left_ros_img(new cv_bridge::CvImage);
     cv_bridge::CvImagePtr right_ros_img(new cv_bridge::CvImage);
 
     left_ros_img->image = left_img;
-    left_ros_img->encoding = "bgr8";
+    left_ros_img->encoding = "mono8";
     right_ros_img->image = right_img;
-    right_ros_img->encoding = "bgr8";
+    right_ros_img->encoding = "mono8";
 
     ros::Rate loop_rate(2);
 
