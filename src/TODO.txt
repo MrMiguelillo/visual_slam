@@ -6,3 +6,5 @@
 		- Scale: One scale must be at most one level higher or lower than the other (???)
 		- Unique match: If one feature is matched more than once, then it's discarded.
 
+
+Probar a detectar en zonas concretas

@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
 				double dist2 = (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
 		
-	        	if (dist2 < thresholdDist2 && abs(from.y-to.y)<3)
+	        	if (dist2 < thresholdDist2 && abs(from.y-to.y)<1)
 	        	{
 		            //good_matches2.push_back(matches[i][j]);
 	            	j = matches[i].size();

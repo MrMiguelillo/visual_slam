@@ -97,7 +97,7 @@ void initializeResultsWindow()
 	cv::Size right_sz = right_img.size();
 
 	cv::Mat left_subimage = resImg( cv::Rect(0, 0, left_img.cols, left_img.rows) );
-	left_img.copyTo( resImg(cv::Rect(0, 0, left_img.cols, left_img.rows)) );
+	left_img.copyTo( left_subimage );
 
 	cv::Mat right_subimage = resImg( cv::Rect(left_img.cols, 0, right_img.cols, right_img.rows) );
 	right_img.copyTo( right_subimage );
@@ -140,3 +140,8 @@ int main(int argc, char **argv)
     cv::destroyWindow("test window");
     return 0;
 }
+
+// TODO:
+//		1.modificar initializeResultsWindow para que tome por parámetro una imagen y hacer que resImg NO SEA GLOBAL
+// 		2.ver si left_img y right_img pueden dejar de ser globales
+	
